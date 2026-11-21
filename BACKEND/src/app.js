@@ -10,7 +10,7 @@ const app = express();
 // ✅ CORS
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://smart-waste-management-system-vert.vercel.app"
+    "https://ecowaste-odisha.vercel.app"
 ];
 
 app.use(cors({
