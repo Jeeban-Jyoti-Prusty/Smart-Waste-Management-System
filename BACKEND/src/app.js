@@ -8,8 +8,13 @@ const reportRouter = require("./routes/report.routes.js");
 const app = express();
 
 // ✅ CORS
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://smart-waste-management-system-vert.vercel.app"
+];
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
 }));
 
