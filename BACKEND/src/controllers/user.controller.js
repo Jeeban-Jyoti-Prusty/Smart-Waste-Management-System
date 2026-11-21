@@ -3,6 +3,13 @@ const cloudinary = require("../config/cloudinary.js");
 const streamifier = require("streamifier");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const isProduction = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+};
 
 // REGISTER USER
 async function registeruser(req, res) {
@@ -39,11 +46,7 @@ async function registeruser(req, res) {
             role: user.role
         }, process.env.JWT_SECRET)
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax",
-        });
+        res.cookie("token", token, cookieOptions);
 
         const userResponse = user.toObject();
         delete userResponse.password;
@@ -94,11 +97,7 @@ async function loginuser(req, res) {
             role: user.role
         }, process.env.JWT_SECRET);
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax",
-        });
+        res.cookie("token", token, cookieOptions);
 
         res.status(200).json({
             "success": true,
@@ -121,11 +120,7 @@ async function logoutuser(req, res) {
 
     try {
 
-        res.clearCookie("token", {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax",
-        });
+        res.clearCookie("token", cookieOptions);
         res.status(200).json({
             message: "Logout sucessfully"
         });
